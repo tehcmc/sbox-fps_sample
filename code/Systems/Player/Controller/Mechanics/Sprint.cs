@@ -14,8 +14,13 @@ public partial class SprintMechanic : PlayerControllerMechanic
 
 	protected override bool ShouldStart()
 	{
-		if ( !Input.Down( InputButton.Run ) ) return false;
-		if ( Player.MoveInput.Length == 0 ) return false;
+		if (!Input.Down(InputButton.Run)) return false;
+		if (Player.MoveInput.Length == 0) return false;
+
+
+		Player.Stamina -= 0.1f;
+
+		DebugOverlay.ScreenText("Stamina: %f", Player.Stamina);
 
 		return true;
 	}
