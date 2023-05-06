@@ -14,7 +14,7 @@ public partial class Player
 	{
 		AmmoTable.Add( WeaponAmmoType.Pistol, 100 );
 		AmmoTable.Add( WeaponAmmoType.SMG, 200 );
-
+		AmmoTable.Add( WeaponAmmoType.Rifle, 200 );
 	}
 
 	public virtual int GetAmmo( WeaponAmmoType key )
@@ -43,5 +43,10 @@ public partial class Player
 	public void SetAmmo( WeaponAmmoType key, int amount )
 	{
 		AmmoTable[key] = amount;
+	}
+
+	public void DestroyAmmoTable()
+	{
+		AmmoTable.Clear();
 	}
 }

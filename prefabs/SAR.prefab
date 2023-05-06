@@ -1,0 +1,161 @@
+{
+  "SchemaVersion": 1,
+  "Name": null,
+  "Description": null,
+  "Root": {
+    "Guid": "1587ae31-0f1e-423a-80a1-c1ec4b61f1cf",
+    "Class": "Weapon",
+    "Entities": [],
+    "Components": [
+      {
+        "Guid": "248f4889-2f8f-4b42-9a6e-711081552b4f",
+        "Class": "PrimaryFire",
+        "Keys": {
+          "BaseDamage": {
+            "Type": "Single",
+            "Value": "20"
+          },
+          "BulletRange": {
+            "Type": "Single",
+            "Value": "2048"
+          },
+          "BulletCount": {
+            "Type": "Int32",
+            "Value": "1"
+          },
+          "BulletForce": {
+            "Type": "Single",
+            "Value": "100"
+          },
+          "BulletSize": {
+            "Type": "Single",
+            "Value": "5"
+          },
+          "BulletSpread": {
+            "Type": "Single",
+            "Value": "0.05"
+          },
+          "FireDelay": {
+            "Type": "Single",
+            "Value": "0"
+          },
+          "_name": {
+            "Value": "\u0022PrimaryFire\u0022"
+          },
+          "_tags": {
+            "Value": "[]"
+          },
+          "FireSound": {
+            "Type": "String",
+            "Value": "\u0022weapons/rust_pumpshotgun/sounds/rust_pumpshotgun.shoot.sound\u0022"
+          }
+        }
+      },
+      {
+        "Guid": "dad87812-ec4a-461e-9a8d-3da9440f32d8",
+        "Class": "Reload",
+        "Keys": {
+          "_name": {
+            "Value": "\u0022Reload\u0022"
+          },
+          "_tags": {
+            "Value": "[]"
+          }
+        }
+      },
+      {
+        "Guid": "0e0b46d6-a309-4129-8f84-701848362cf6",
+        "Class": "ViewModelComponent",
+        "Keys": {
+          "OverallWeight": {
+            "Type": "Single",
+            "Value": "1"
+          },
+          "WeightReturnForce": {
+            "Type": "Single",
+            "Value": "100"
+          },
+          "WeightDamping": {
+            "Type": "Single",
+            "Value": "10"
+          },
+          "AccelerationDamping": {
+            "Type": "Single",
+            "Value": "1"
+          },
+          "VelocityScale": {
+            "Type": "Single",
+            "Value": "0.5"
+          },
+          "WalkCycleOffset": {
+            "Type": "Vector3",
+            "Value": "\u00220,0,0\u0022"
+          },
+          "BobAmount": {
+            "Type": "Vector2",
+            "Value": "\u00220,0\u0022"
+          },
+          "GlobalPositionOffset": {
+            "Type": "Vector3",
+            "Value": "\u0022-10.5,7.05,-1.95\u0022"
+          },
+          "GlobalAngleOffset": {
+            "Type": "Angles",
+            "Value": "\u00220,0,0\u0022"
+          },
+          "CrouchPositionOffset": {
+            "Type": "Vector3",
+            "Value": "\u00220,0,0\u0022"
+          },
+          "CrouchAngleOffset": {
+            "Type": "Angles",
+            "Value": "\u00220,0,0\u0022"
+          },
+          "ViewModelPath": {
+            "Type": "String",
+            "Value": "\u0022weapons/rust_crossbow/v_rust_crossbow.vmdl\u0022"
+          },
+          "_name": {
+            "Value": "\u0022SAR View Model\u0022"
+          },
+          "_tags": {
+            "Value": "[]"
+          }
+        }
+      }
+    ],
+    "Keys": {
+      "ClipSize": {
+        "Type": "Int32",
+        "Value": "16"
+      },
+      "Model": {
+        "Type": "Model",
+        "Value": "\u0022weapons/rust_crossbow/rust_crossbow.vmdl\u0022"
+      },
+      "AmmoType": {
+        "Type": "WeaponAmmoType",
+        "Value": "\u0022Rifle\u0022"
+      },
+      "HoldType": {
+        "Type": "WeaponHoldType",
+        "Value": "\u0022Rifle\u0022"
+      },
+      "_name": {
+        "Value": "\u0022Semi-Automatic Rifle\u0022"
+      },
+      "_localposition": {
+        "Value": "\u00220,0,0\u0022"
+      },
+      "_localrotation": {
+        "Value": "\u00220,0,0\u0022"
+      },
+      "_scale": {
+        "Value": "1"
+      },
+      "_tags": {
+        "Value": "\u0022\u0022"
+      }
+    }
+  }
+}
