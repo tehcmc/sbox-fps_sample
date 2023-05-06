@@ -21,7 +21,7 @@ public partial class WalkMechanic : PlayerControllerMechanic
 		return true;
 	}
 
-	public override float? WishSpeed => 200f;
+	public override float? WishSpeed => 150f;
 
 	protected override void Simulate()
 	{
@@ -154,7 +154,7 @@ public partial class WalkMechanic : PlayerControllerMechanic
 			ClearGroundEntity();
 			return;
 		}
-		
+
 		var pm = Controller.TraceBBox( vBumpOrigin, point, 4.0f );
 
 		var angle = Vector3.GetAngle( Vector3.Up, pm.Normal );

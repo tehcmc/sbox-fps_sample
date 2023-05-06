@@ -12,14 +12,19 @@ public partial class PrimaryFire : WeaponComponent, ISingletonComponent
 	[Net, Prefab] public float BulletSize { get; set; }
 	[Net, Prefab] public float BulletSpread { get; set; }
 	[Net, Prefab] public float FireDelay { get; set; }
+
+
+
 	[Net, Prefab, ResourceType( "sound" )] public string FireSound { get; set; }
 
 	TimeUntil TimeUntilCanFire { get; set; }
 
 	protected override bool CanStart( Player player )
 	{
-		if ( !Input.Down( InputButton.PrimaryAttack ) ) return false;
+		if ( !Input.Down( ("attack1") ) ) return false;
 		if ( TimeUntilCanFire > 0 ) return false;
+		if ( Weapon.CurrentClip <= 0 ) return false;
+
 
 		return TimeSinceActivated > FireDelay;
 	}
@@ -79,11 +84,14 @@ public partial class PrimaryFire : WeaponComponent, ISingletonComponent
 
 		for ( int i = 0; i < bulletCount; i++ )
 		{
+
 			var rot = Rotation.LookAt( Player.AimRay.Forward );
 
 			var forward = rot.Forward;
 			forward += (Vector3.Random + Vector3.Random + Vector3.Random + Vector3.Random) * spread * 0.25f;
 			forward = forward.Normal;
+
+			Weapon.CurrentClip--;
 
 			var damage = BaseDamage;
 
@@ -100,6 +108,7 @@ public partial class PrimaryFire : WeaponComponent, ISingletonComponent
 					.WithWeapon( Weapon );
 
 				tr.Entity.TakeDamage( damageInfo );
+
 			}
 		}
 	}

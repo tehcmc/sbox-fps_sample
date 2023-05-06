@@ -150,6 +150,18 @@
             "Value": "[]"
           }
         }
+      },
+      {
+        "Guid": "c06623cf-6688-435e-b294-0dba00e09c73",
+        "Class": "Reload",
+        "Keys": {
+          "_name": {
+            "Value": "\u0022Reload\u0022"
+          },
+          "_tags": {
+            "Value": "[]"
+          }
+        }
       }
     ],
     "Keys": {
@@ -187,6 +199,18 @@
       "Model": {
         "Type": "Model",
         "Value": "\u0022weapons/rust_pistol/rust_pistol.vmdl\u0022"
+      },
+      "ClipSize": {
+        "Type": "Single",
+        "Value": "10"
+      },
+      "CurrentClip": {
+        "Type": "Single",
+        "Value": "7"
+      },
+      "AmmoReserve": {
+        "Type": "Int32",
+        "Value": "15"
       }
     }
   }

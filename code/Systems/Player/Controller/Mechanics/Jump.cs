@@ -18,7 +18,7 @@ public partial class JumpMechanic : PlayerControllerMechanic
 	protected override void OnStart()
 	{
 		float flGroundFactor = 1.0f;
-		float flMul = 250f;
+		float flMul = 300f;
 		float startz = Velocity.z;
 
 		Velocity = Velocity.WithZ( startz + flMul * flGroundFactor );

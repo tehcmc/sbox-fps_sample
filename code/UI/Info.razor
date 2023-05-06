@@ -3,34 +3,55 @@
 @namespace GameTemplate
 
 <root class="with-flex column-reverse with-gap with-shadow">
-    <cell class="with-center with-padding-large with-gap">
-        <label class="with-header">@Health</label>
-        <i class="with-header with-icon">monitor_heart</i>
-    </cell>
 
-    @{
-        if ( Inventory == null ) return;
-        int i = 0;
-        foreach( var weapon in Inventory.Weapons )
-        {
-            i++;
-            <cell class="with-center with-padding-large with-gap @(weapon == Weapon ? "active" : "")">
-                <label class="with-text name">@weapon.Name</label>
-                <label class="with-subheader id">@i</label>
-            </cell>
-        }
-    }
+	<cell class="with-center with-padding-large with-gap">
+		<label class="with-header">@Stamina</label>
+		<i class="with-header with-icon">directions_run</i>
+	</cell>
+
+	<cell class="with-center with-padding-large with-gap">
+		<label class="with-header">@Health</label>
+		<i class="with-header with-icon">monitor_heart</i>
+	</cell>
+
+
+	@{
+		if (Inventory == null) return;
+		int i = 0;
+		foreach (var weapon in Inventory.Weapons)
+		{
+			i++;
+			<cell class="with-center with-padding-large with-gap @(weapon == Weapon ? "active" : "")">
+				<label class="with-text name">@weapon.Name</label>
+				<label class="with-subheader id">@i</label>
+			</cell>
+		}
+	}
+
+	<cell class="with-center with-padding-large with-gap">
+
+		<label class="with-header">@CurrentAmmo</label>
+		<label class="with-header">/</label>
+		<label class="with-header">@Reserve</label>
+
+		<i class="with-header with-icon">stacked_bar_chart</i>
+	</cell>
+
 </root>
 
-@code 
+@code
 {
-    public string Health => $"{Player.Health:F0}";
-    public Player Player => Game.LocalPawn as Player;
-    public Weapon Weapon => Player?.ActiveWeapon;
-    public Inventory Inventory => Player.Inventory;
+	public string Health => $"{Player.Health:F0}";
+	public string Stamina => $"{Player.Stamina:F0}";
+	public string CurrentAmmo => $"{Weapon.CurrentClip:F0}";
+	public string Reserve => $"{Player.GetAmmo(Weapon.AmmoType):F0}";
 
-    protected override int BuildHash()
-    {
-        return HashCode.Combine( Player?.Health, Weapon );
-    }
+	public Player Player => Game.LocalPawn as Player;
+	public Weapon Weapon => Player?.ActiveWeapon;
+	public Inventory Inventory => Player.Inventory;
+
+	protected override int BuildHash()
+	{
+		return HashCode.Combine(Player?.Health, Player?.Stamina, Weapon, Weapon?.CurrentClip, Player?.GetAmmo(Weapon.AmmoType));
+	}
 }

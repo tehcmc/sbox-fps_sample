@@ -31,6 +31,8 @@ public partial class Player : AnimatedEntity
 	public Weapon ActiveWeapon => Inventory?.ActiveWeapon;
 
 
+
+	[Net]
 	public float Stamina { get; set; }
 	/// <summary>
 	/// The information for the last piece of damage this player took.
@@ -45,13 +47,15 @@ public partial class Player : AnimatedEntity
 	/// <summary>
 	/// The model your player will use.
 	/// </summary>
-	static Model PlayerModel = Model.Load("models/citizen/citizen.vmdl");
+	static Model PlayerModel = Model.Load( "models/citizen/citizen.vmdl" );
 
 	/// <summary>
 	/// When the player is first created. This isn't called when a player respawns.
 	/// </summary>
 	public override void Spawn()
 	{
+
+		SetUpAmmo();
 		Model = PlayerModel;
 		Predictable = true;
 		Stamina = 100f;
@@ -62,7 +66,7 @@ public partial class Player : AnimatedEntity
 		EnableLagCompensation = true;
 		EnableHitboxes = true;
 
-		Tags.Add("player");
+		Tags.Add( "player" );
 	}
 
 	/// <summary>
@@ -70,7 +74,8 @@ public partial class Player : AnimatedEntity
 	/// </summary>
 	public void Respawn()
 	{
-		SetupPhysicsFromAABB(PhysicsMotionType.Keyframed, new Vector3(-16, -16, 0), new Vector3(16, 16, 72));
+
+		SetupPhysicsFromAABB( PhysicsMotionType.Keyframed, new Vector3( -16, -16, 0 ), new Vector3( 16, 16, 72 ) );
 
 		Health = 100;
 		LifeState = LifeState.Alive;
@@ -80,7 +85,7 @@ public partial class Player : AnimatedEntity
 		// Re-enable all children.
 		Children.OfType<ModelEntity>()
 			.ToList()
-			.ForEach(x => x.EnableDrawing = true);
+			.ForEach( x => x.EnableDrawing = true );
 
 		// We need a player controller to work with any kind of mechanics.
 		Components.Create<PlayerController>();
@@ -89,23 +94,30 @@ public partial class Player : AnimatedEntity
 		Components.RemoveAny<PlayerControllerMechanic>();
 
 		// Add mechanics.
-		Components.Create<WalkMechanic>();
+
+
 		Components.Create<JumpMechanic>();
 		Components.Create<AirMoveMechanic>();
+
+		Components.Create<WalkMechanic>();
 		Components.Create<SprintMechanic>();
+		Components.Create<StaminaRegen>();
+
 		Components.Create<CrouchMechanic>();
+
+
 		Components.Create<InteractionMechanic>();
 
 		Components.Create<PlayerAnimator>();
 		Components.Create<PlayerCamera>();
 
 		var inventory = Components.Create<Inventory>();
-		inventory.AddWeapon(PrefabLibrary.Spawn<Weapon>("prefabs/pistol.prefab"));
-		inventory.AddWeapon(PrefabLibrary.Spawn<Weapon>("prefabs/smg.prefab"), false);
+		inventory.AddWeapon( PrefabLibrary.Spawn<Weapon>( "prefabs/pistol.prefab" ) );
+		inventory.AddWeapon( PrefabLibrary.Spawn<Weapon>( "prefabs/smg.prefab" ), false );
 
 		SetupClothing();
-
-		GameManager.Current?.MoveToSpawnpoint(this);
+		SetUpAmmo();
+		GameManager.Current?.MoveToSpawnpoint( this );
 		ResetInterpolation();
 	}
 
@@ -114,83 +126,83 @@ public partial class Player : AnimatedEntity
 	/// Called every server and client tick.
 	/// </summary>
 	/// <param name="cl"></param>
-	public override void Simulate(IClient cl)
+	public override void Simulate( IClient cl )
 	{
-		Rotation = LookInput.WithPitch(0f).ToRotation();
+		Rotation = LookInput.WithPitch( 0f ).ToRotation();
 
-		Controller?.Simulate(cl);
-		Animator?.Simulate(cl);
-		Inventory?.Simulate(cl);
+		Controller?.Simulate( cl );
+		Animator?.Simulate( cl );
+		Inventory?.Simulate( cl );
 	}
 
 	/// <summary>
 	/// Called every frame clientside.
 	/// </summary>
 	/// <param name="cl"></param>
-	public override void FrameSimulate(IClient cl)
+	public override void FrameSimulate( IClient cl )
 	{
-		Rotation = LookInput.WithPitch(0f).ToRotation();
+		Rotation = LookInput.WithPitch( 0f ).ToRotation();
 
-		Controller?.FrameSimulate(cl);
-		Camera?.Update(this);
+		Controller?.FrameSimulate( cl );
+		Camera?.Update( this );
 	}
 
 	[ClientRpc]
-	public void SetAudioEffect(string effectName, float strength, float velocity = 20f, float fadeOut = 4f)
+	public void SetAudioEffect( string effectName, float strength, float velocity = 20f, float fadeOut = 4f )
 	{
-		Audio.SetEffect(effectName, strength, velocity: 20.0f, fadeOut: 4.0f * strength);
+		Audio.SetEffect( effectName, strength, velocity: 20.0f, fadeOut: 4.0f * strength );
 	}
 
-	public override void TakeDamage(DamageInfo info)
+	public override void TakeDamage( DamageInfo info )
 	{
-		if (LifeState != LifeState.Alive)
+		if ( LifeState != LifeState.Alive )
 			return;
 
 		// Check for headshot damage
-		var isHeadshot = info.Hitbox.HasTag("head");
-		if (isHeadshot)
+		var isHeadshot = info.Hitbox.HasTag( "head" );
+		if ( isHeadshot )
 		{
 			info.Damage *= 2.5f;
 		}
 
 		// Check if we got hit by a bullet, if we did, play a sound.
-		if (info.HasTag("bullet"))
+		if ( info.HasTag( "bullet" ) )
 		{
-			Sound.FromScreen(To.Single(Client), "sounds/player/damage_taken_shot.sound");
+			Sound.FromScreen( To.Single( Client ), "sounds/player/damage_taken_shot.sound" );
 		}
 
 		// Play a deafening effect if we get hit by blast damage.
-		if (info.HasTag("blast"))
+		if ( info.HasTag( "blast" ) )
 		{
-			SetAudioEffect(To.Single(Client), "flasthbang", info.Damage.LerpInverse(0, 60));
+			SetAudioEffect( To.Single( Client ), "flasthbang", info.Damage.LerpInverse( 0, 60 ) );
 		}
 
-		if (Health > 0 && info.Damage > 0)
+		if ( Health > 0 && info.Damage > 0 )
 		{
 			Health -= info.Damage;
 
-			if (Health <= 0)
+			if ( Health <= 0 )
 			{
 				Health = 0;
 				OnKilled();
 			}
 		}
 
-		this.ProceduralHitReaction(info);
+		this.ProceduralHitReaction( info );
 	}
 
 	private async void AsyncRespawn()
 	{
-		await GameTask.DelaySeconds(3f);
+		await GameTask.DelaySeconds( 3f );
 		Respawn();
 	}
 
 	public override void OnKilled()
 	{
-		if (LifeState == LifeState.Alive)
+		if ( LifeState == LifeState.Alive )
 		{
-			CreateRagdoll(Controller.Velocity, LastDamage.Position, LastDamage.Force,
-				LastDamage.BoneIndex, LastDamage.HasTag("bullet"), LastDamage.HasTag("blast"));
+			CreateRagdoll( Controller.Velocity, LastDamage.Position, LastDamage.Force,
+				LastDamage.BoneIndex, LastDamage.HasTag( "bullet" ), LastDamage.HasTag( "blast" ) );
 
 			LifeState = LifeState.Dead;
 			EnableAllCollisions = false;
@@ -204,7 +216,7 @@ public partial class Player : AnimatedEntity
 			// Disable all children as well.
 			Children.OfType<ModelEntity>()
 				.ToList()
-				.ForEach(x => x.EnableDrawing = false);
+				.ForEach( x => x.EnableDrawing = false );
 
 			AsyncRespawn();
 		}
@@ -213,44 +225,44 @@ public partial class Player : AnimatedEntity
 	/// <summary>
 	/// Called clientside every time we fire the footstep anim event.
 	/// </summary>
-	public override void OnAnimEventFootstep(Vector3 pos, int foot, float volume)
+	public override void OnAnimEventFootstep( Vector3 pos, int foot, float volume )
 	{
-		if (!Game.IsClient)
+		if ( !Game.IsClient )
 			return;
 
-		if (LifeState != LifeState.Alive)
+		if ( LifeState != LifeState.Alive )
 			return;
 
-		if (TimeSinceFootstep < 0.2f)
+		if ( TimeSinceFootstep < 0.2f )
 			return;
 
 		volume *= GetFootstepVolume();
 
 		TimeSinceFootstep = 0;
 
-		var tr = Trace.Ray(pos, pos + Vector3.Down * 20)
-			.Radius(1)
-			.Ignore(this)
+		var tr = Trace.Ray( pos, pos + Vector3.Down * 20 )
+			.Radius( 1 )
+			.Ignore( this )
 			.Run();
 
-		if (!tr.Hit) return;
+		if ( !tr.Hit ) return;
 
-		tr.Surface.DoFootstep(this, tr, foot, volume);
+		tr.Surface.DoFootstep( this, tr, foot, volume );
 	}
 
 	protected float GetFootstepVolume()
 	{
-		return Controller.Velocity.WithZ(0).Length.LerpInverse(0.0f, 200.0f) * 1f;
+		return Controller.Velocity.WithZ( 0 ).Length.LerpInverse( 0.0f, 200.0f ) * 1f;
 	}
 
-	[ConCmd.Server("kill")]
+	[ConCmd.Server( "kill" )]
 	public static void DoSuicide()
 	{
-		(ConsoleSystem.Caller.Pawn as Player)?.TakeDamage(DamageInfo.Generic(1000f));
+		(ConsoleSystem.Caller.Pawn as Player)?.TakeDamage( DamageInfo.Generic( 1000f ) );
 	}
 
-	[ConCmd.Admin("sethp")]
-	public static void SetHP(float value)
+	[ConCmd.Admin( "sethp" )]
+	public static void SetHP( float value )
 	{
 		(ConsoleSystem.Caller.Pawn as Player).Health = value;
 	}

@@ -29,7 +29,7 @@
           },
           "FireDelay": {
             "Type": "Single",
-            "Value": "0.1"
+            "Value": "0.06"
           },
           "BaseDamage": {
             "Type": "Single",
@@ -150,6 +150,18 @@
             "Value": "[]"
           }
         }
+      },
+      {
+        "Guid": "49c6beb7-e553-47b5-afdf-a3869fd18972",
+        "Class": "Reload",
+        "Keys": {
+          "_name": {
+            "Value": "\u0022Reload\u0022"
+          },
+          "_tags": {
+            "Value": "[]"
+          }
+        }
       }
     ],
     "Keys": {
@@ -159,7 +171,7 @@
       },
       "Handedness": {
         "Type": "WeaponHandedness",
-        "Value": "\u0022Left\u0022"
+        "Value": "\u0022Both\u0022"
       },
       "ViewModelPath": {
         "Type": "String",
@@ -187,6 +199,22 @@
       "Model": {
         "Type": "Model",
         "Value": "\u0022weapons/rust_smg/rust_smg.vmdl\u0022"
+      },
+      "ClipSize": {
+        "Type": "Single",
+        "Value": "24"
+      },
+      "CurrentClip": {
+        "Type": "Single",
+        "Value": "30"
+      },
+      "AmmoType": {
+        "Type": "WeaponAmmoType",
+        "Value": "\u0022SMG\u0022"
+      },
+      "AmmoReserve": {
+        "Type": "Int32",
+        "Value": "48"
       }
     }
   }

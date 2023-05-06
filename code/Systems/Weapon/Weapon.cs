@@ -5,8 +5,19 @@ public partial class Weapon : AnimatedEntity
 {
 	// Won't be Net eventually, when we serialize prefabs on client
 	[Net, Prefab, Category( "Animation" )] public WeaponHoldType HoldType { get; set; } = WeaponHoldType.Pistol;
+
+	[Net, Prefab, Category( "Ammunition" )] public WeaponAmmoType AmmoType { get; set; } = WeaponAmmoType.Pistol;
+
+	[Net, Prefab, Category( "Ammunition" )] public int AmmoReserve { get; set; } = 300;
 	[Net, Prefab, Category( "Animation" )] public WeaponHandedness Handedness { get; set; } = WeaponHandedness.Both;
+
+	[Net, Prefab] public FireType SelectedType { get; set; } = FireType.Automatic;
 	[Net, Prefab, Category( "Animation" )] public float HoldTypePose { get; set; } = 0;
+
+	[Net, Prefab] public int ClipSize { get; set; }
+	[Net] public int CurrentClip { get; set; }
+
+
 
 	public AnimatedEntity EffectEntity => ViewModelEntity.IsValid() ? ViewModelEntity : this;
 	public WeaponViewModel ViewModelEntity { get; protected set; }
@@ -14,6 +25,7 @@ public partial class Weapon : AnimatedEntity
 
 	public override void Spawn()
 	{
+		CurrentClip = ClipSize;
 		EnableHideInFirstPerson = true;
 		EnableShadowInFirstPerson = true;
 		EnableDrawing = false;
@@ -111,6 +123,7 @@ public enum WeaponHoldType
 	Swing
 }
 
+
 /// <summary>
 /// Describes the handedness of a weapon, which hand (or both) we hold the weapon in.
 /// </summary>
@@ -120,4 +133,26 @@ public enum WeaponHandedness
 	Right,
 	Left
 }
+/// <summary>
+/// Fire mode of gun. Should be able to be toggled, along with enabling/disabling certain types (ie single-fire only gun)
+/// </summary>
+public enum FireType
+{
+	Safe,
+	Single,
+	Automatic,
+	Burst
+}
 
+/// <summary>
+/// Ammo type of a weapon. Get ammo count from player.
+/// </summary>
+public enum WeaponAmmoType
+{
+	None,
+	Pistol,
+	SMG,
+	Rifle,
+	Shotgun,
+	Special
+}
