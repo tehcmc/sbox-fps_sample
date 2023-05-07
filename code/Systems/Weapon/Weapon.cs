@@ -15,6 +15,9 @@ public partial class Weapon : AnimatedEntity
 	[Net, Prefab, Category( "Animation" )] public float HoldTypePose { get; set; } = 0;
 
 	[Net, Prefab] public int ClipSize { get; set; }
+
+
+
 	[Net] public int CurrentClip { get; set; }
 
 
@@ -25,10 +28,13 @@ public partial class Weapon : AnimatedEntity
 
 	public override void Spawn()
 	{
+
+
 		CurrentClip = ClipSize;
 		EnableHideInFirstPerson = true;
 		EnableShadowInFirstPerson = true;
 		EnableDrawing = false;
+
 	}
 
 	/// <summary>

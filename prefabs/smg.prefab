@@ -160,6 +160,10 @@
           },
           "_tags": {
             "Value": "[]"
+          },
+          "reloadTime": {
+            "Type": "Single",
+            "Value": "4.5"
           }
         }
       }

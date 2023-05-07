@@ -24,7 +24,7 @@ public partial class PrimaryFire : WeaponComponent, ISingletonComponent
 		if ( !Input.Down( ("attack1") ) ) return false;
 		if ( TimeUntilCanFire > 0 ) return false;
 		if ( Weapon.CurrentClip <= 0 ) return false;
-
+		if ( Weapon.GetComponent<Reload>().isReloading ) return false;
 
 		return TimeSinceActivated > FireDelay;
 	}
@@ -33,7 +33,7 @@ public partial class PrimaryFire : WeaponComponent, ISingletonComponent
 	{
 		if ( eventName == "sprint.stop" )
 		{
-			TimeUntilCanFire = 0.2f;
+			TimeUntilCanFire = 1.2f;
 		}
 	}
 
