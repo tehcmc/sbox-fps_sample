@@ -8,8 +8,8 @@ public partial class Rocket : AnimatedEntity
 {
 	[Net, Prefab] public float rocketTime { get; set; } = 10f; // time before rocket explodes if it hasn't hit something yet
 
-	[Net, Prefab] public float rocketSpeed { get; set; } = 500f;
-	[Net, Predicted] Vector3 TargetPos { get; set; }
+	[Net, Prefab] public float rocketSpeed { get; set; } = 1500f;
+	[Net, Predicted] public Vector3 TargetPos { get; set; }
 
 	[ClientRpc]
 	public virtual void Destroy()
@@ -22,10 +22,11 @@ public partial class Rocket : AnimatedEntity
 		this.Position += (target - this.Position).Normal * rocketSpeed * Time.Delta;
 	}
 
+
 	public override void Simulate( IClient cl )
 	{
 		base.Simulate( cl );
-
+		MoveTowards( TargetPos );
 	}
 
 

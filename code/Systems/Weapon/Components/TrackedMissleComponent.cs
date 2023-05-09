@@ -66,7 +66,7 @@ public partial class TrackedMissile : WeaponComponent, ISingletonComponent
 			RocketRef = rocket;
 			RocketRef.Owner = player;
 			RocketRef.Position = player.EyePosition + player.EyeRotation.Forward * 160;
-
+			rocket.Name = ("Rocket_sv");
 
 		}
 
@@ -86,7 +86,7 @@ public partial class TrackedMissile : WeaponComponent, ISingletonComponent
 			}
 			else
 			{
-				RocketRef.MoveTowards( lastPos );
+				RocketRef.MoveTowards( tr.EndPosition - 10000 );
 			}
 
 		}
