@@ -22,6 +22,9 @@ public partial class Reload : WeaponComponent, ISingletonComponent
 
 		if ( isReloading ) return false;
 
+
+
+
 		return true;
 
 	}
@@ -32,18 +35,14 @@ public partial class Reload : WeaponComponent, ISingletonComponent
 
 		base.OnStart( player );
 		player?.SetAnimParameter( "b_reload", true );
-		//	reloadTime = (float)WeaponViewModel.Current?.CurrentSequence.Duration;
 
 		isReloading = true;
+
 		WeaponViewModel.Current?.SetAnimParameter( "reload", true );
 		if ( Game.IsServer )
 		{
 			DoReloadEffects( To.Single( player ) );
 		}
-
-
-
-
 	}
 
 	public override void Simulate( IClient cl, Player player )
@@ -76,33 +75,10 @@ public partial class Reload : WeaponComponent, ISingletonComponent
 	protected virtual void ReloadGun( Player player )
 	{
 
-		//for now just set clip back to max size
-		//Weapon.CurrentClip = Weapon.ClipSize;
-
-		//todo - create table of ammotypes on player character, get ammo count and subtract from that to reload. Possibly for loop so that ammo below mag size can reload safely.
-
-
-
-
-
 		var amount = player.TakeAmmo( Weapon.AmmoType, (Weapon.ClipSize - Weapon.CurrentClip) );
 		Weapon.CurrentClip += amount;
 		player.GetAmmo( Weapon.AmmoType );
 		isReloading = false;
-		/*
-		for ( int i = 0; i < Weapon.ClipSize; i++ )
-		{
-			if ( Weapon.CurrentClip >= Weapon.ClipSize || Weapon.AmmoReserve <= 0 )
-			{
-				break;
-			}
-			else
-			{
-				Weapon.AmmoReserve--;
-				Weapon.CurrentClip++;
-			}
 
-		}
-		*/
 	}
 }

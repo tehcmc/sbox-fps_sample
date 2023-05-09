@@ -1,4 +1,5 @@
 using GameTemplate.Mechanics;
+using Sandbox;
 
 namespace GameTemplate.Weapons;
 
@@ -13,9 +14,15 @@ public partial class PrimaryFire : WeaponComponent, ISingletonComponent
 	[Net, Prefab] public float BulletSpread { get; set; }
 	[Net, Prefab] public float FireDelay { get; set; }
 
+	[Net] public Rocket RocketRef { get; set; }
+	[Net] public Vector3 lastPos { get; set; }
+
 
 
 	[Net, Prefab, ResourceType( "sound" )] public string FireSound { get; set; }
+
+
+	[Net] public bool isFiring { get; set; } = false;
 
 	TimeUntil TimeUntilCanFire { get; set; }
 
@@ -40,7 +47,7 @@ public partial class PrimaryFire : WeaponComponent, ISingletonComponent
 	protected override void OnStart( Player player )
 	{
 		base.OnStart( player );
-
+		isFiring = true;
 		player?.SetAnimParameter( "b_attack", true );
 
 		// Send clientside effects to the player.
@@ -51,7 +58,21 @@ public partial class PrimaryFire : WeaponComponent, ISingletonComponent
 		}
 
 		ShootBullet( BulletSpread, BulletForce, BulletSize, BulletCount, BulletRange );
+
+
+
+
+
+
+
+
+
+
+
+
+
 	}
+
 
 	[ClientRpc]
 	public static void DoShootEffects()
@@ -82,6 +103,9 @@ public partial class PrimaryFire : WeaponComponent, ISingletonComponent
 		//
 		Game.SetRandomSeed( Time.Tick );
 
+
+
+
 		for ( int i = 0; i < bulletCount; i++ )
 		{
 
@@ -110,6 +134,7 @@ public partial class PrimaryFire : WeaponComponent, ISingletonComponent
 				tr.Entity.TakeDamage( damageInfo );
 
 			}
+			isFiring = false;
 		}
 	}
 }

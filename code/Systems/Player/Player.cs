@@ -116,6 +116,7 @@ public partial class Player : AnimatedEntity
 		inventory.AddWeapon( PrefabLibrary.Spawn<Weapon>( "prefabs/pistol.prefab" ) );
 		inventory.AddWeapon( PrefabLibrary.Spawn<Weapon>( "prefabs/smg.prefab" ), false );
 		inventory.AddWeapon( PrefabLibrary.Spawn<Weapon>( "prefabs/sar.prefab" ), false );
+		inventory.AddWeapon( PrefabLibrary.Spawn<Weapon>( "prefabs/rocketlauncher.prefab" ), false );
 
 		SetupClothing();
 		GameManager.Current?.MoveToSpawnpoint( this );

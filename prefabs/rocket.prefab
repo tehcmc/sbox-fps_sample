@@ -1,0 +1,36 @@
+{
+  "SchemaVersion": 1,
+  "Name": null,
+  "Description": null,
+  "Root": {
+    "Guid": "534fe743-c1ce-43b3-b0ba-448c562951f0",
+    "Class": "Rocket",
+    "Entities": [],
+    "Components": [],
+    "Keys": {
+      "Model": {
+        "Type": "Model",
+        "Value": "\u0022models/dev/box.vmdl\u0022"
+      },
+      "RenderColor": {
+        "Type": "Color",
+        "Value": "\u00221000,0,0,1\u0022"
+      },
+      "_name": {
+        "Value": "\u0022Rocket\u0022"
+      },
+      "_localposition": {
+        "Value": "\u00220,0,0\u0022"
+      },
+      "_localrotation": {
+        "Value": "\u00220,0,0\u0022"
+      },
+      "_scale": {
+        "Value": "0.3"
+      },
+      "_tags": {
+        "Value": "\u0022\u0022"
+      }
+    }
+  }
+}

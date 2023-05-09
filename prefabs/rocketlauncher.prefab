@@ -1,0 +1,121 @@
+{
+  "SchemaVersion": 1,
+  "Name": null,
+  "Description": null,
+  "Root": {
+    "Guid": "3bda2129-ea87-44df-82c3-736756fafc78",
+    "Class": "Weapon",
+    "Entities": [],
+    "Components": [
+      {
+        "Guid": "346e1f05-696b-4e0d-8001-21da2c3df73b",
+        "Class": "TrackedMissile",
+        "Keys": {
+          "_name": {
+            "Value": "\u0022TrackedMissile\u0022"
+          },
+          "_tags": {
+            "Value": "[]"
+          }
+        }
+      },
+      {
+        "Guid": "08e6669d-8a5c-4b91-ab7e-b7931dc29a19",
+        "Class": "ViewModelComponent",
+        "Keys": {
+          "OverallWeight": {
+            "Type": "Single",
+            "Value": "1"
+          },
+          "WeightReturnForce": {
+            "Type": "Single",
+            "Value": "100"
+          },
+          "WeightDamping": {
+            "Type": "Single",
+            "Value": "10"
+          },
+          "AccelerationDamping": {
+            "Type": "Single",
+            "Value": "1"
+          },
+          "VelocityScale": {
+            "Type": "Single",
+            "Value": "0.5"
+          },
+          "WalkCycleOffset": {
+            "Type": "Vector3",
+            "Value": "\u00220,0,0\u0022"
+          },
+          "BobAmount": {
+            "Type": "Vector2",
+            "Value": "\u00220,0\u0022"
+          },
+          "GlobalPositionOffset": {
+            "Type": "Vector3",
+            "Value": "\u0022-10.5,7.05,-1.95\u0022"
+          },
+          "GlobalAngleOffset": {
+            "Type": "Angles",
+            "Value": "\u00220,0,0\u0022"
+          },
+          "CrouchPositionOffset": {
+            "Type": "Vector3",
+            "Value": "\u00220,0,0\u0022"
+          },
+          "CrouchAngleOffset": {
+            "Type": "Angles",
+            "Value": "\u00220,0,0\u0022"
+          },
+          "ViewModelPath": {
+            "Type": "String",
+            "Value": "\u0022weapons/rust_pumpshotgun/v_rust_pumpshotgun.vmdl\u0022"
+          },
+          "_name": {
+            "Value": "\u0022Rocket View Model\u0022"
+          },
+          "_tags": {
+            "Value": "[]"
+          }
+        }
+      }
+    ],
+    "Keys": {
+      "ClipSize": {
+        "Type": "Int32",
+        "Value": "0"
+      },
+      "Model": {
+        "Type": "Model",
+        "Value": "\u0022weapons/rust_shotgun/rust_shotgun.vmdl\u0022"
+      },
+      "_name": {
+        "Value": "\u0022Rocket Launcher\u0022"
+      },
+      "_localposition": {
+        "Value": "\u00220,0,0\u0022"
+      },
+      "_localrotation": {
+        "Value": "\u00220,0,0\u0022"
+      },
+      "_scale": {
+        "Value": "1"
+      },
+      "_tags": {
+        "Value": "\u0022\u0022"
+      },
+      "HoldType": {
+        "Type": "WeaponHoldType",
+        "Value": "\u0022Shotgun\u0022"
+      },
+      "Handedness": {
+        "Type": "WeaponHandedness",
+        "Value": "\u0022Both\u0022"
+      },
+      "AmmoType": {
+        "Type": "WeaponAmmoType",
+        "Value": "\u0022Pistol\u0022"
+      }
+    }
+  }
+}
