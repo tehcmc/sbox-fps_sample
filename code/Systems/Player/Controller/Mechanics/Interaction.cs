@@ -26,7 +26,7 @@ public partial class InteractionMechanic : PlayerControllerMechanic, ISingletonC
 				}
 			}
 
-			if ( !Input.Down( InputButton.Use ) )
+			if ( !Input.Down( "use" ) )
 			{
 				StopUsing();
 				return;

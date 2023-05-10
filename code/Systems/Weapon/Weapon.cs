@@ -16,8 +16,7 @@ public partial class Weapon : AnimatedEntity
 
 	[Net, Prefab] public int ClipSize { get; set; }
 
-
-
+	[Net] public bool isActiveWeapon { get; set; } = false;
 	[Net] public int CurrentClip { get; set; }
 
 

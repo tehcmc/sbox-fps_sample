@@ -31,6 +31,7 @@ public partial class TrackedMissile : WeaponComponent, ISingletonComponent
 	protected override bool CanStart( Player player )
 	{
 
+		if ( !Weapon.isActiveWeapon ) return false;
 		if ( !Input.Down( ("attack1") ) ) return false;
 		//if ( Weapon.CurrentClip <= 0 ) return false;
 		//if ( Weapon.GetComponent<Reload>().isReloading ) return false;
@@ -75,10 +76,10 @@ public partial class TrackedMissile : WeaponComponent, ISingletonComponent
 	{
 		base.Simulate( cl, player );
 
-		TraceResult tr = Trace.Ray( player.AimRay, 200000000 ).WorldOnly().Run();
+
 		if ( RocketRef != null )
 		{
-
+			TraceResult tr = Trace.Ray( player.AimRay, 200000000 ).WorldOnly().Run();
 			lastPos = tr.EndPosition;
 			if ( tr.Hit )
 			{

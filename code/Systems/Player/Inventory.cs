@@ -36,6 +36,7 @@ public partial class Inventory : EntityComponent<Player>, ISingletonComponent
 
 	public void SetActiveWeapon( Weapon weapon )
 	{
+
 		var currentWeapon = ActiveWeapon;
 		if ( currentWeapon.IsValid() )
 		{
@@ -46,7 +47,13 @@ public partial class Inventory : EntityComponent<Player>, ISingletonComponent
 			}
 
 			currentWeapon.OnHolster( Entity );
+
+			ActiveWeapon.isActiveWeapon = false;
+
 			ActiveWeapon = null;
+
+
+
 		}
 
 		// Can reject deploy if we're doing an action already
@@ -58,6 +65,7 @@ public partial class Inventory : EntityComponent<Player>, ISingletonComponent
 		ActiveWeapon = weapon;
 
 		weapon?.OnDeploy( Entity );
+		weapon.isActiveWeapon = true;
 	}
 
 	protected override void OnDeactivate()
@@ -119,6 +127,10 @@ public partial class Inventory : EntityComponent<Player>, ISingletonComponent
 			Entity.ActiveWeaponInput = null;
 		}
 
-		ActiveWeapon?.Simulate( cl );
+		//ActiveWeapon?.Simulate( cl ); 
+
+
+		Weapons.ToList()
+				.ForEach( x => x.Simulate( cl ) );
 	}
 }

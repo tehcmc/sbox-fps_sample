@@ -68,4 +68,9 @@ public partial class TemplateGameManager : GameManager
 		base.ClientDisconnect( client, reason );
 		Chat.AddChatEntry( To.Everyone, client.Name, "left the game", client.SteamId, true );
 	}
+
+	public override void Simulate( IClient cl )
+	{
+		base.Simulate( cl );
+	}
 }

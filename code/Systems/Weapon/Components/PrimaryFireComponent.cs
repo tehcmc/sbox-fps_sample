@@ -28,6 +28,7 @@ public partial class PrimaryFire : WeaponComponent, ISingletonComponent
 
 	protected override bool CanStart( Player player )
 	{
+		if ( !Weapon.isActiveWeapon ) return false;
 		if ( !Input.Down( ("attack1") ) ) return false;
 		if ( TimeUntilCanFire > 0 ) return false;
 		if ( Weapon.CurrentClip <= 0 ) return false;
@@ -58,18 +59,6 @@ public partial class PrimaryFire : WeaponComponent, ISingletonComponent
 		}
 
 		ShootBullet( BulletSpread, BulletForce, BulletSize, BulletCount, BulletRange );
-
-
-
-
-
-
-
-
-
-
-
-
 
 	}
 

@@ -26,8 +26,24 @@ public partial class Rocket : AnimatedEntity
 	public override void Simulate( IClient cl )
 	{
 		base.Simulate( cl );
-		MoveTowards( TargetPos );
+
 	}
 
 
+
+	public override void StartTouch( Entity other )
+	{
+		base.StartTouch( other );
+		DebugOverlay.ScreenText( "Stamina:{Player.Stamina" );
+
+		Delete();
+
+	}
+
+
+	public override void Touch( Entity other )
+	{
+		base.Touch( other );
+		DebugOverlay.ScreenText( "SXXXXXXXXXXX" );
+	}
 }

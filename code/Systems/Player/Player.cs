@@ -104,7 +104,7 @@ public partial class Player : AnimatedEntity
 		Components.Create<StaminaRegen>();
 
 		Components.Create<CrouchMechanic>();
-
+		Components.Create<SlideMechanic>();
 
 		Components.Create<InteractionMechanic>();
 
@@ -135,6 +135,7 @@ public partial class Player : AnimatedEntity
 		Controller?.Simulate( cl );
 		Animator?.Simulate( cl );
 		Inventory?.Simulate( cl );
+
 	}
 
 	/// <summary>

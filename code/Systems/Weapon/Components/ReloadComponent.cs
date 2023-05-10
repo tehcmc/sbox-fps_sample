@@ -12,15 +12,16 @@ public partial class Reload : WeaponComponent, ISingletonComponent
 	[Net, Prefab] public float reloadTime { get; set; } = 4f;
 	protected override bool CanStart( Player player )
 	{
+		if ( !Weapon.isActiveWeapon ) return false;
 
 		if ( !Input.Down( ("reload") ) ) return false;
 
-		if ( Weapon.CurrentClip == Weapon.ClipSize ) return false; //if mag is full
+		if ( isReloading ) return false;
 
+		if ( Weapon.CurrentClip == Weapon.ClipSize ) return false; //if mag is full
 
 		if ( player.GetAmmo( Weapon.AmmoType ) <= 0 ) return false;
 
-		if ( isReloading ) return false;
 
 
 
@@ -79,6 +80,6 @@ public partial class Reload : WeaponComponent, ISingletonComponent
 		Weapon.CurrentClip += amount;
 		player.GetAmmo( Weapon.AmmoType );
 		isReloading = false;
-
+		RunGameEvent( "reload.finish" );
 	}
 }
