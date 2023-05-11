@@ -8,29 +8,45 @@ namespace GameTemplate.Mechanics;
 public partial class SlideMechanic : PlayerControllerMechanic
 {
 	[Net] public bool isSliding { get; set; } = false;
-	[Net] public float slideForce { get; set; } = 500f;
+	[Net] public float slideForce { get; set; } = 1500f;
+
+	[Net] public float slideThreshold { get; set; } = 250f;
 
 	protected override bool ShouldStart()
 	{
 		if ( !Input.Down( "duck" ) ) return false;
 
+
+
+		if ( isSliding ) return false;
+
 		if ( Player.MoveInput.Length == 0 ) return false;
 
+		if ( Player.Velocity.Length < slideThreshold ) return false;
 		return true;
 	}
 	protected override void Simulate()
 	{
-		DebugOverlay.ScreenText( "SLIDE!!!!" );
+
 		SlideMovement();
 	}
 	protected override void OnStart()
 	{
-
+		isSliding = true;
 
 	}
 
 	protected virtual void SlideMovement()
 	{
-		Player.Root.ApplyLocalImpulse( Player.MoveInput.Normal * slideForce );
+
+		DebugOverlay.ScreenText( $"Momentum:{Player.Velocity.Length}" );
+		Player.PhysicsBody.ApplyImpulse( Player.Velocity.Length * slideForce );
+
+	}
+
+	protected override void OnStop()
+	{
+		DebugOverlay.ScreenText( "SLIDE!!!! stop" );
+		isSliding = false;
 	}
 }

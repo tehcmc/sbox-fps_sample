@@ -269,4 +269,10 @@ public partial class Player : AnimatedEntity
 	{
 		(ConsoleSystem.Caller.Pawn as Player).Health = value;
 	}
+
+	[ConCmd.Client( "addammo" )]
+	public static void MyConsoleCommand( WeaponAmmoType type, int count )
+	{
+
+	}
 }

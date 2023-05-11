@@ -21,7 +21,6 @@ public partial class Player
 	{
 		if ( AmmoTable.ContainsKey( key ) == false ) return 0;
 
-		Vector2 pos = new( 100, 150 );
 
 		return (int)AmmoTable[key];
 	}

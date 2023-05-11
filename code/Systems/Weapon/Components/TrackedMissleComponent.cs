@@ -27,7 +27,7 @@ public partial class TrackedMissile : WeaponComponent, ISingletonComponent
 {
 	[Net] public Rocket RocketRef { get; set; }
 	[Net] public Vector3 lastPos { get; set; }
-
+	[Net, Prefab, ResourceType( "sound" )] public string FireSound { get; set; }
 	protected override bool CanStart( Player player )
 	{
 
@@ -54,23 +54,22 @@ public partial class TrackedMissile : WeaponComponent, ISingletonComponent
 		base.OnStart( player );
 
 		player?.SetAnimParameter( "b_attack", true );
-
 		// Send clientside effects to the player.
 		if ( Game.IsServer )
 		{
+			player.PlaySound( FireSound );
 			DoShootEffects( To.Single( player ) );
+
+
+			if ( PrefabLibrary.TrySpawn<Rocket>( "prefabs/rocket.prefab", out var rocket ) )
+			{
+
+				RocketRef = rocket;
+				RocketRef.Owner = player;
+				RocketRef.Position = player.EyePosition + player.EyeRotation.Forward * 100;
+
+			}
 		}
-
-		if ( PrefabLibrary.TrySpawn<Rocket>( "prefabs/rocket.prefab", out var rocket ) )
-		{
-
-			RocketRef = rocket;
-			RocketRef.Owner = player;
-			RocketRef.Position = player.EyePosition + player.EyeRotation.Forward * 160;
-			rocket.Name = ("Rocket_sv");
-
-		}
-
 	}
 	public override void Simulate( IClient cl, Player player )
 	{
@@ -79,16 +78,19 @@ public partial class TrackedMissile : WeaponComponent, ISingletonComponent
 
 		if ( RocketRef != null )
 		{
-			TraceResult tr = Trace.Ray( player.AimRay, 200000000 ).WorldOnly().Run();
+			TraceResult tr = Trace.Ray( player.AimRay, 200000000 ).WorldAndEntities().Ignore( player ).Ignore( RocketRef ).Run();
 			lastPos = tr.EndPosition;
 			if ( tr.Hit )
 			{
-				RocketRef.MoveTowards( tr.EndPosition );
+				RocketRef.TargetPos = Vector3.Lerp( lastPos, tr.EndPosition, 0.5f );
 			}
 			else
 			{
-				RocketRef.MoveTowards( tr.EndPosition - 10000 );
+
+				RocketRef.TargetPos = lastPos;
 			}
+
+			RocketRef.Simulate( cl );
 
 		}
 

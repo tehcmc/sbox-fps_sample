@@ -16,6 +16,10 @@
           },
           "_tags": {
             "Value": "[]"
+          },
+          "FireSound": {
+            "Type": "String",
+            "Value": "\u0022audio/rocket_fire.sound\u0022"
           }
         }
       },

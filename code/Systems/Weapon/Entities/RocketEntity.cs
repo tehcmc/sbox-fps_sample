@@ -9,17 +9,38 @@ public partial class Rocket : AnimatedEntity
 	[Net, Prefab] public float rocketTime { get; set; } = 10f; // time before rocket explodes if it hasn't hit something yet
 
 	[Net, Prefab] public float rocketSpeed { get; set; } = 1500f;
-	[Net, Predicted] public Vector3 TargetPos { get; set; }
 
-	[ClientRpc]
+
+	[Net, Prefab, ResourceType( "sound" )] public string MoveSound { get; set; }
+
+	[Net, Prefab, ResourceType( "vpcf" )] public string RocketTrail { get; set; }
+
+	[Net, Predicted] public Vector3 TargetPos { get; set; }
+	[Net, Prefab] public float radius { get; set; } = 50f;
+
+	[Net] float timer { get; set; } = 0f;
+
+	[Net] Sound soundRef { get; set; }
+	public override void Spawn()
+	{
+		base.Spawn();
+
+		var particle = Particles.Create( RocketTrail, this );
+		soundRef = PlaySound( MoveSound, Model.Name );
+
+	}
 	public virtual void Destroy()
 	{
+		soundRef.Stop();
+		Explode();
 		Delete();
 	}
 
 	public virtual void MoveTowards( Vector3 target )
 	{
-		this.Position += (target - this.Position).Normal * rocketSpeed * Time.Delta;
+
+		Velocity = (target - Position).Normal * rocketSpeed * Time.Delta;
+
 	}
 
 
@@ -27,23 +48,37 @@ public partial class Rocket : AnimatedEntity
 	{
 		base.Simulate( cl );
 
+		timer += 0.1f;
+		var targetRotation = Rotation.LookAt( Velocity, Vector3.Up );
+		Position += Velocity;
+		LocalRotation = targetRotation;
+
+
+		TraceResult tr = Trace.Ray( Position, Position + targetRotation.Forward * 50f ).WorldAndEntities().Ignore( this ).Run();
+
+		if ( tr.Hit )
+		{
+			if ( Game.IsServer )
+			{
+				Destroy();
+			}
+		}
+		MoveTowards( TargetPos );
+		if ( timer >= rocketTime )
+		{
+			Destroy();
+		}
 	}
 
-
-
-	public override void StartTouch( Entity other )
+	void Explode()
 	{
-		base.StartTouch( other );
-		DebugOverlay.ScreenText( "Stamina:{Player.Stamina" );
+		new ExplosionEntity
+		{
+			Position = Position,
+			Radius = radius,
+			Damage = 100,
+			ForceScale = 1000f
+		}.Explode( this );
 
-		Delete();
-
-	}
-
-
-	public override void Touch( Entity other )
-	{
-		base.Touch( other );
-		DebugOverlay.ScreenText( "SXXXXXXXXXXX" );
 	}
 }

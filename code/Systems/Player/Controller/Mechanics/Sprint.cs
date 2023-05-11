@@ -19,6 +19,7 @@ public partial class SprintMechanic : PlayerControllerMechanic
 	{
 		if ( !Input.Down( "run" ) ) return false;
 
+		if ( Controller.IsMechanicActive<SlideMechanic>() ) return false;
 		if ( Player.MoveInput.Length == 0 ) return false;
 		if ( Player.Stamina <= 0 ) return false;
 		return true;
