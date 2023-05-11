@@ -38,6 +38,10 @@
       "RocketTrail": {
         "Type": "String",
         "Value": "\u0022particles/explosion_smoke_const.vpcf\u0022"
+      },
+      "rocketTime": {
+        "Type": "Single",
+        "Value": "20"
       }
     }
   }

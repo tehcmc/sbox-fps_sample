@@ -28,17 +28,15 @@ public partial class TrackedMissile : WeaponComponent, ISingletonComponent
 	[Net] public Rocket RocketRef { get; set; }
 	[Net] public Vector3 lastPos { get; set; }
 	[Net, Prefab, ResourceType( "sound" )] public string FireSound { get; set; }
+
+	[Net, Prefab, ResourceType( "prefab" )] public string RocketToFire { get; set; }
 	protected override bool CanStart( Player player )
 	{
-
-		if ( !Weapon.isActiveWeapon ) return false;
 		if ( !Input.Down( ("attack1") ) ) return false;
-		//if ( Weapon.CurrentClip <= 0 ) return false;
-		//if ( Weapon.GetComponent<Reload>().isReloading ) return false;
+		if ( Weapon.CurrentClip <= 0 ) return false;
+		if ( Weapon.GetComponent<Reload>().isReloading ) return false;
 
-
-		//if rocket exists
-		if ( RocketRef != null ) return false;
+		if ( RocketRef != null ) return false;  //if rocket exists
 
 
 
@@ -54,19 +52,32 @@ public partial class TrackedMissile : WeaponComponent, ISingletonComponent
 		base.OnStart( player );
 
 		player?.SetAnimParameter( "b_attack", true );
+
 		// Send clientside effects to the player.
 		if ( Game.IsServer )
 		{
+
 			player.PlaySound( FireSound );
 			DoShootEffects( To.Single( player ) );
+			ShootRocket( player );
 
-
-			if ( PrefabLibrary.TrySpawn<Rocket>( "prefabs/rocket.prefab", out var rocket ) )
+		}
+	}
+	public virtual void ShootRocket( Player player )
+	{
+		Weapon.CurrentClip--;
+		if ( Game.IsServer )
+		{
+			if ( PrefabLibrary.TrySpawn<Rocket>( RocketToFire, out var rocket ) )
 			{
 
 				RocketRef = rocket;
 				RocketRef.Owner = player;
 				RocketRef.Position = player.EyePosition + player.EyeRotation.Forward * 100;
+
+			}
+			if ( Weapon.CurrentClip <= 0 )
+			{
 
 			}
 		}
@@ -75,6 +86,19 @@ public partial class TrackedMissile : WeaponComponent, ISingletonComponent
 	{
 		base.Simulate( cl, player );
 
+
+		if ( RocketRef != null )
+		{
+			if ( RocketRef.IsBeingDestroyed() )
+			{
+				Weapon.GetComponent<Reload>().SafeReload( player );
+			}
+		}
+
+	}
+	public override void Tick( IClient cl, Player player )
+	{
+		base.Tick( cl, player );
 
 		if ( RocketRef != null )
 		{
@@ -92,10 +116,16 @@ public partial class TrackedMissile : WeaponComponent, ISingletonComponent
 
 			RocketRef.Simulate( cl );
 
+			if ( RocketRef != null )
+			{
+				if ( RocketRef.IsBeingDestroyed() )
+				{
+					Weapon.GetComponent<Reload>().SafeReload( player );
+				}
+			}
 		}
 
 	}
-
 	[ClientRpc]
 	public static void DoShootEffects()
 	{

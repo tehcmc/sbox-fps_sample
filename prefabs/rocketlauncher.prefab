@@ -20,6 +20,10 @@
           "FireSound": {
             "Type": "String",
             "Value": "\u0022audio/rocket_fire.sound\u0022"
+          },
+          "RocketToFire": {
+            "Type": "String",
+            "Value": "\u0022prefabs/rocket.prefab\u0022"
           }
         }
       },
@@ -82,12 +86,28 @@
             "Value": "[]"
           }
         }
+      },
+      {
+        "Guid": "0221ec88-2fe5-43bc-af2f-e6b65bf2af9c",
+        "Class": "Reload",
+        "Keys": {
+          "reloadTime": {
+            "Type": "Single",
+            "Value": "2"
+          },
+          "_name": {
+            "Value": "\u0022Reload\u0022"
+          },
+          "_tags": {
+            "Value": "[]"
+          }
+        }
       }
     ],
     "Keys": {
       "ClipSize": {
         "Type": "Int32",
-        "Value": "0"
+        "Value": "1"
       },
       "Model": {
         "Type": "Model",
@@ -118,7 +138,11 @@
       },
       "AmmoType": {
         "Type": "WeaponAmmoType",
-        "Value": "\u0022Pistol\u0022"
+        "Value": "\u0022Rocket\u0022"
+      },
+      "DoTick": {
+        "Type": "Boolean",
+        "Value": "true"
       }
     }
   }

@@ -6,7 +6,7 @@
 [Prefab, Title( "Weapon Entity" ), Icon( "track_changes" )]
 public partial class Rocket : AnimatedEntity
 {
-	[Net, Prefab] public float rocketTime { get; set; } = 10f; // time before rocket explodes if it hasn't hit something yet
+	[Net, Prefab] public float rocketTime { get; set; } = 2f; // time before rocket explodes if it hasn't hit something yet
 
 	[Net, Prefab] public float rocketSpeed { get; set; } = 1500f;
 
@@ -15,22 +15,30 @@ public partial class Rocket : AnimatedEntity
 
 	[Net, Prefab, ResourceType( "vpcf" )] public string RocketTrail { get; set; }
 
-	[Net, Predicted] public Vector3 TargetPos { get; set; }
 	[Net, Prefab] public float radius { get; set; } = 50f;
+
+
+	[Net, Predicted] public TimeSince TimeSinceSpawned { get; protected set; }
+	[Net, Predicted] public Vector3 TargetPos { get; set; }
+
+
 
 	[Net] float timer { get; set; } = 0f;
 
 	[Net] Sound soundRef { get; set; }
+
+	[Net] bool beingDestroyed { get; set; } = false;
 	public override void Spawn()
 	{
 		base.Spawn();
 
 		var particle = Particles.Create( RocketTrail, this );
 		soundRef = PlaySound( MoveSound, Model.Name );
-
+		TimeSinceSpawned = 0;
 	}
 	public virtual void Destroy()
 	{
+		beingDestroyed = true;
 		soundRef.Stop();
 		Explode();
 		Delete();
@@ -56,6 +64,7 @@ public partial class Rocket : AnimatedEntity
 
 		TraceResult tr = Trace.Ray( Position, Position + targetRotation.Forward * 50f ).WorldAndEntities().Ignore( this ).Run();
 
+
 		if ( tr.Hit )
 		{
 			if ( Game.IsServer )
@@ -63,11 +72,18 @@ public partial class Rocket : AnimatedEntity
 				Destroy();
 			}
 		}
-		MoveTowards( TargetPos );
-		if ( timer >= rocketTime )
+
+		if ( TimeSinceSpawned >= rocketTime )
 		{
-			Destroy();
+			if ( Game.IsServer )
+			{
+				Destroy();
+			}
 		}
+
+
+		MoveTowards( TargetPos );
+
 	}
 
 	void Explode()
@@ -80,5 +96,10 @@ public partial class Rocket : AnimatedEntity
 			ForceScale = 1000f
 		}.Explode( this );
 
+	}
+
+	public bool IsBeingDestroyed()
+	{
+		return beingDestroyed;
 	}
 }

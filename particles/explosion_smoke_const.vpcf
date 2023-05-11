@@ -689,5 +689,14 @@
 			_class = "C_OP_RenderSprites"
 			m_hTexture = resource:"materials/particle/fire_particle_2/fire_particle_2.vtex"
 		},
+		{
+			_class = "C_OP_RenderDeferredLight"
+		},
+	]
+	m_Children = 
+	[
+		{
+			m_ChildRef = resource:"particles/explosion_fireball_const.vpcf"
+		},
 	]
 }

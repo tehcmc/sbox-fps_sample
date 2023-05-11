@@ -14,9 +14,8 @@ public partial class Weapon : AnimatedEntity
 	[Net, Prefab] public FireType SelectedType { get; set; } = FireType.Automatic;
 	[Net, Prefab, Category( "Animation" )] public float HoldTypePose { get; set; } = 0;
 
+	[Net, Prefab] public bool DoTick { get; set; } = false;
 	[Net, Prefab] public int ClipSize { get; set; }
-
-	[Net] public bool isActiveWeapon { get; set; } = false;
 	[Net] public int CurrentClip { get; set; }
 
 
@@ -103,6 +102,15 @@ public partial class Weapon : AnimatedEntity
 		SimulateComponents( cl );
 	}
 
+	public virtual void Tick( IClient cl )
+	{
+		if ( DoTick )
+		{
+			TickComponents( cl );
+		}
+	}
+
+
 	protected override void OnDestroy()
 	{
 		ViewModelEntity?.Delete();
@@ -159,5 +167,8 @@ public enum WeaponAmmoType
 	SMG,
 	Rifle,
 	Shotgun,
-	Special
+	Rocket,
+	GrenadeLauncher,
+	ComBall,
+	ThrownGrenade
 }

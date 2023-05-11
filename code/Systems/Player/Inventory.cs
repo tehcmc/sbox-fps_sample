@@ -48,7 +48,7 @@ public partial class Inventory : EntityComponent<Player>, ISingletonComponent
 
 			currentWeapon.OnHolster( Entity );
 
-			ActiveWeapon.isActiveWeapon = false;
+
 
 			ActiveWeapon = null;
 
@@ -65,7 +65,7 @@ public partial class Inventory : EntityComponent<Player>, ISingletonComponent
 		ActiveWeapon = weapon;
 
 		weapon?.OnDeploy( Entity );
-		weapon.isActiveWeapon = true;
+
 	}
 
 	protected override void OnDeactivate()
@@ -127,10 +127,10 @@ public partial class Inventory : EntityComponent<Player>, ISingletonComponent
 			Entity.ActiveWeaponInput = null;
 		}
 
-		//ActiveWeapon?.Simulate( cl ); 
+		ActiveWeapon?.Simulate( cl );
 
 
 		Weapons.ToList()
-				.ForEach( x => x.Simulate( cl ) );
+				.ForEach( x => x.Tick( cl ) );
 	}
 }

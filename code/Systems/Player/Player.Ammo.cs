@@ -15,6 +15,7 @@ public partial class Player
 		AmmoTable.Add( WeaponAmmoType.Pistol, 100 );
 		AmmoTable.Add( WeaponAmmoType.SMG, 200 );
 		AmmoTable.Add( WeaponAmmoType.Rifle, 200 );
+		AmmoTable.Add( WeaponAmmoType.Rocket, 10 );
 	}
 
 	public virtual int GetAmmo( WeaponAmmoType key )

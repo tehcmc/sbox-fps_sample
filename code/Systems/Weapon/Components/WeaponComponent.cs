@@ -96,6 +96,12 @@ public partial class WeaponComponent : EntityComponent<Weapon>
 		}
 	}
 
+	public virtual void Tick( IClient cl, Player player )
+	{
+
+	}
+
+
 	/// <summary>
 	/// Called when the component action stops. See <see cref="Simulate(IClient, Player)"/>
 	/// </summary>

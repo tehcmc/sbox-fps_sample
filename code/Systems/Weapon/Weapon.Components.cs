@@ -15,6 +15,14 @@ public partial class Weapon
 			component.Simulate( cl, player );
 		}
 	}
+	protected void TickComponents( IClient cl )
+	{
+		var player = Owner as Player;
+		foreach ( var component in Components.GetAll<WeaponComponent>() )
+		{
+			component.Tick( cl, player );
+		}
+	}
 
 	public void RunGameEvent( string eventName )
 	{
@@ -23,7 +31,7 @@ public partial class Weapon
 
 	public override void BuildInput()
 	{
-		foreach( var component in Components.GetAll<WeaponComponent>() )
+		foreach ( var component in Components.GetAll<WeaponComponent>() )
 		{
 			component.BuildInput();
 		}

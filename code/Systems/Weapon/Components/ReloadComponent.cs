@@ -12,7 +12,7 @@ public partial class Reload : WeaponComponent, ISingletonComponent
 	[Net, Prefab] public float reloadTime { get; set; } = 4f;
 	protected override bool CanStart( Player player )
 	{
-		if ( !Weapon.isActiveWeapon ) return false;
+
 
 		if ( !Input.Down( ("reload") ) ) return false;
 
@@ -81,5 +81,10 @@ public partial class Reload : WeaponComponent, ISingletonComponent
 		player.GetAmmo( Weapon.AmmoType );
 		isReloading = false;
 		RunGameEvent( "reload.finish" );
+	}
+
+	public void SafeReload( Player player )
+	{
+		OnStart( player );
 	}
 }
