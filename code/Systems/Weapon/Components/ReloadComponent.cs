@@ -35,11 +35,13 @@ public partial class Reload : WeaponComponent, ISingletonComponent
 	{
 
 		base.OnStart( player );
+
 		player?.SetAnimParameter( "b_reload", true );
 
 		isReloading = true;
 
 		WeaponViewModel.Current?.SetAnimParameter( "reload", true );
+
 		if ( Game.IsServer )
 		{
 			DoReloadEffects( To.Single( player ) );
@@ -81,10 +83,15 @@ public partial class Reload : WeaponComponent, ISingletonComponent
 		player.GetAmmo( Weapon.AmmoType );
 		isReloading = false;
 		RunGameEvent( "reload.finish" );
+
 	}
 
 	public void SafeReload( Player player )
 	{
-		OnStart( player );
+		if ( Game.IsServer )
+		{
+			OnStart( player );
+		}
+
 	}
 }

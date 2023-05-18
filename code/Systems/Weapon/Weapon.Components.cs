@@ -6,7 +6,13 @@ public partial class Weapon
 	{
 		return Components.Get<T>( false );
 	}
-
+	public void Initialize()
+	{
+		foreach ( var component in Components.GetAll<WeaponComponent>() )
+		{
+			component.Initialize( this );
+		}
+	}
 	protected void SimulateComponents( IClient cl )
 	{
 		var player = Owner as Player;

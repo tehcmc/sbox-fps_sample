@@ -14,7 +14,7 @@
       },
       "RenderColor": {
         "Type": "Color",
-        "Value": "\u00221000,0,0,1\u0022"
+        "Value": "\u00220,0,0,1\u0022"
       },
       "_name": {
         "Value": "\u0022Rocket\u0022"
@@ -42,6 +42,14 @@
       "rocketTime": {
         "Type": "Single",
         "Value": "20"
+      },
+      "explosionDamage": {
+        "Type": "Single",
+        "Value": "500"
+      },
+      "explosionRadius": {
+        "Type": "Single",
+        "Value": "400"
       }
     }
   }

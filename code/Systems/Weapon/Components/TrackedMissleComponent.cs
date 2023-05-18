@@ -65,7 +65,7 @@ public partial class TrackedMissile : WeaponComponent, ISingletonComponent
 	}
 	public virtual void ShootRocket( Player player )
 	{
-		Weapon.CurrentClip--;
+
 		if ( Game.IsServer )
 		{
 			if ( PrefabLibrary.TrySpawn<Rocket>( RocketToFire, out var rocket ) )
@@ -76,11 +76,8 @@ public partial class TrackedMissile : WeaponComponent, ISingletonComponent
 				RocketRef.Position = player.EyePosition + player.EyeRotation.Forward * 100;
 
 			}
-			if ( Weapon.CurrentClip <= 0 )
-			{
-
-			}
 		}
+		Weapon.CurrentClip--;
 	}
 	public override void Simulate( IClient cl, Player player )
 	{
@@ -106,19 +103,19 @@ public partial class TrackedMissile : WeaponComponent, ISingletonComponent
 			lastPos = tr.EndPosition;
 			if ( tr.Hit )
 			{
-				RocketRef.TargetPos = Vector3.Lerp( lastPos, tr.EndPosition, 0.5f );
+				RocketRef.MoveTowards( Vector3.Lerp( lastPos, tr.EndPosition, 0.5f ) );
 			}
 			else
 			{
 
-				RocketRef.TargetPos = lastPos;
+				RocketRef.MoveTowards( lastPos );
 			}
 
 			RocketRef.Simulate( cl );
 
 			if ( RocketRef != null )
 			{
-				if ( RocketRef.IsBeingDestroyed() )
+				if ( RocketRef.IsBeingDestroyed() && !player.isRespawining )
 				{
 					Weapon.GetComponent<Reload>().SafeReload( player );
 				}

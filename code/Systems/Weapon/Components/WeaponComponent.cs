@@ -119,7 +119,6 @@ public partial class WeaponComponent : EntityComponent<Weapon>
 	/// <param name="weapon"></param>
 	public virtual void Initialize( Weapon weapon )
 	{
-		//
 	}
 
 	/// <summary>
@@ -136,6 +135,6 @@ public partial class WeaponComponent : EntityComponent<Weapon>
 	/// </summary>
 	public virtual void BuildInput()
 	{
-		//
+
 	}
 }

@@ -129,7 +129,7 @@ public partial class Inventory : EntityComponent<Player>, ISingletonComponent
 
 		ActiveWeapon?.Simulate( cl );
 
-
+		
 		Weapons.ToList()
 				.ForEach( x => x.Tick( cl ) );
 	}

@@ -15,15 +15,12 @@ public partial class Rocket : AnimatedEntity
 
 	[Net, Prefab, ResourceType( "vpcf" )] public string RocketTrail { get; set; }
 
-	[Net, Prefab] public float radius { get; set; } = 50f;
+	[Net, Prefab] public float explosionRadius { get; set; } = 50f;
 
-
+	[Net, Prefab] public float explosionDamage { get; set; } = 50f;
 	[Net, Predicted] public TimeSince TimeSinceSpawned { get; protected set; }
 	[Net, Predicted] public Vector3 TargetPos { get; set; }
 
-
-
-	[Net] float timer { get; set; } = 0f;
 
 	[Net] Sound soundRef { get; set; }
 
@@ -56,7 +53,6 @@ public partial class Rocket : AnimatedEntity
 	{
 		base.Simulate( cl );
 
-		timer += 0.1f;
 		var targetRotation = Rotation.LookAt( Velocity, Vector3.Up );
 		Position += Velocity;
 		LocalRotation = targetRotation;
@@ -73,17 +69,13 @@ public partial class Rocket : AnimatedEntity
 			}
 		}
 
-		if ( TimeSinceSpawned >= rocketTime )
+		if ( TimeSinceSpawned >= rocketTime || (TimeSinceSpawned > 0.01f && Velocity.Length <= 0) )
 		{
 			if ( Game.IsServer )
 			{
 				Destroy();
 			}
 		}
-
-
-		MoveTowards( TargetPos );
-
 	}
 
 	void Explode()
@@ -91,8 +83,8 @@ public partial class Rocket : AnimatedEntity
 		new ExplosionEntity
 		{
 			Position = Position,
-			Radius = radius,
-			Damage = 100,
+			Radius = explosionRadius,
+			Damage = explosionDamage,
 			ForceScale = 1000f
 		}.Explode( this );
 

@@ -33,6 +33,7 @@ public partial class Player : AnimatedEntity
 
 
 	[Net]
+	public bool isRespawining { get; set; } = false;
 	public float Stamina { get; set; }
 	/// <summary>
 	/// The information for the last piece of damage this player took.
@@ -74,6 +75,7 @@ public partial class Player : AnimatedEntity
 	/// </summary>
 	public void Respawn()
 	{
+		isRespawining = false;
 
 		SetupPhysicsFromAABB( PhysicsMotionType.Keyframed, new Vector3( -16, -16, 0 ), new Vector3( 16, 16, 72 ) );
 
@@ -130,11 +132,17 @@ public partial class Player : AnimatedEntity
 	/// <param name="cl"></param>
 	public override void Simulate( IClient cl )
 	{
-		Rotation = LookInput.WithPitch( 0f ).ToRotation();
 
-		Controller?.Simulate( cl );
-		Animator?.Simulate( cl );
-		Inventory?.Simulate( cl );
+		if ( !isRespawining )
+		{
+
+			Rotation = LookInput.WithPitch( 0f ).ToRotation();
+
+			Controller?.Simulate( cl );
+			Animator?.Simulate( cl );
+			Inventory?.Simulate( cl );
+
+		}
 
 	}
 
@@ -187,6 +195,7 @@ public partial class Player : AnimatedEntity
 			if ( Health <= 0 )
 			{
 				Health = 0;
+				isRespawining = true;
 				OnKilled();
 			}
 		}
@@ -204,6 +213,7 @@ public partial class Player : AnimatedEntity
 	{
 		if ( LifeState == LifeState.Alive )
 		{
+
 			CreateRagdoll( Controller.Velocity, LastDamage.Position, LastDamage.Force,
 				LastDamage.BoneIndex, LastDamage.HasTag( "bullet" ), LastDamage.HasTag( "blast" ) );
 

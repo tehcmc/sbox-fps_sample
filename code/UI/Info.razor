@@ -52,6 +52,11 @@
 
 	protected override int BuildHash()
 	{
+		if (!Player.IsValid()) return 0;
+		if (!Weapon.IsValid()) return 0;
+
 		return HashCode.Combine(Player?.Health, Player?.Stamina, Weapon, Weapon?.CurrentClip, Player?.GetAmmo(Weapon.AmmoType));
+		
+		
 	}
 }

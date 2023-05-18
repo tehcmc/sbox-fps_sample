@@ -77,7 +77,7 @@
           },
           "ViewModelPath": {
             "Type": "String",
-            "Value": "\u0022weapons/rust_pumpshotgun/v_rust_pumpshotgun.vmdl\u0022"
+            "Value": "\u0022weapons/rust_shotgun/v_rust_shotgun.vmdl\u0022"
           },
           "_name": {
             "Value": "\u0022Rocket View Model\u0022"

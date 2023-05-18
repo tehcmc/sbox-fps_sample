@@ -1,28 +1,29 @@
-Info
-{
+
+$font-stack: Lato;
+
+Info {
     position: absolute;
     bottom: 64px;
     right: 64px;
-    width: 150px;
+    width: 250px;
     flex-direction: column-reverse;
+    border-radius: 15px 50px;
 
-    cell
-    {
-        transition: all 0.2s ease;
+    cell {
+        transition: all 0.1s ease;
 
-        &.active
-        {
+
+
+        &.active {
             padding: 16px;
 
-            .name
-            {
+            .name {
                 color: white;
                 font-size: 24px;
             }
         }
 
-        .id
-        {
+        .id {
             font-size: 12px;
         }
     }
